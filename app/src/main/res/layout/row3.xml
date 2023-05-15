@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="wrap_content">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5sp"
+        app:cardCornerRadius="10sp"
+        app:cardElevation="10sp"
+        app:cardUseCompatPadding="false">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:weightSum="3"
+    android:layout_margin="10dp"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:layout_width="0dp"
+        android:id="@+id/imageViewNews"
+        android:layout_gravity="center"
+        android:src="@drawable/cough"
+        android:layout_weight="1"
+        android:layout_height="60sp"/>
+
+    <TextView
+        android:layout_width="0dp"
+        android:text="Sample Text"
+        android:id="@+id/textViewNews"
+        android:layout_gravity="center"
+        android:textSize="20sp"
+        android:layout_weight="2"
+        android:layout_height="wrap_content"/>
+</LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+</RelativeLayout>
