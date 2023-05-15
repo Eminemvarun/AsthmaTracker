@@ -165,6 +165,17 @@ public class ExaberDB {
             cursor.close();
             Log.i("vlog", "getThisWeekCount: " + result);
             return result;
+        } else if(i==2){
+            int result = 0;
+            Cursor cursor = myDatabase.rawQuery("Select COUNT(_id) FROM InhalerUse WHERE _date >= date('now', '-7 days')", null);
+            Log.i("vlogs", "Cursor Count is " + cursor.getCount());
+            cursor.moveToFirst();
+            if (cursor.getCount() > 0) {
+                result = cursor.getInt(0);
+            }
+            cursor.close();
+            Log.i("vlog", "getThisWeekCount: " + result);
+            return result;
         }else return 0;
     }
 
@@ -172,6 +183,19 @@ public class ExaberDB {
         if(i==1) {
             int result = 0;
             Cursor cursor = myDatabase.rawQuery("Select COUNT(_id) FROM Exaberations " +
+                    "WHERE _date >= date('now', '-14 days') AND " +
+                    "_date < date('now', '-7 days')", null);
+            Log.i("vlogs", "Cursor Count is " + cursor.getCount());
+            cursor.moveToFirst();
+            if (cursor.getCount() > 0) {
+                result = cursor.getInt(0);
+            }
+            cursor.close();
+            Log.i("vlog", "getThisWeekCount: " + result);
+            return result;
+        }else if(i==2){
+            int result = 0;
+            Cursor cursor = myDatabase.rawQuery("Select COUNT(_id) FROM InhalerUse " +
                     "WHERE _date >= date('now', '-14 days') AND " +
                     "_date < date('now', '-7 days')", null);
             Log.i("vlogs", "Cursor Count is " + cursor.getCount());

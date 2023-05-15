@@ -27,6 +27,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:id="@+id/textViewLastInhalerUse"
+            android:visibility="gone"
             android:textSize="20sp"
             android:text="5 Days Since Last Inhaler Use"
             />
@@ -36,6 +38,7 @@
             android:orientation="horizontal"
             android:id="@+id/llInhalerStats"
             android:weightSum="3"
+            android:visibility="gone"
             android:layout_margin="20sp"
             android:layout_height="wrap_content"
             android:baselineAligned="false">

@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewPropertyAnimator;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -76,9 +77,20 @@ public class InhalerActivity extends AppCompatActivity {
         super.onStart();
         ArrayList<InhalerDataClass> myArrayList = new ArrayList<>();
         inhalerAdapter myAdapter;
+        TextView tvInhalerUse,tvStats1,tvStats2,tvStats3;
+        LinearLayout llStats;
+
+
 
         TextView textView = findViewById(R.id.tvInhalerTop);
         RecyclerView recyclerView = findViewById(R.id.recyclerViewInhaler);
+        tvInhalerUse = findViewById(R.id.textViewLastInhalerUse);
+        tvStats1 = findViewById(R.id.textViewInhalerStats1);
+        tvStats2 = findViewById(R.id.textViewInhalerStats2);
+        tvStats3 = findViewById(R.id.textViewInhalerStats3);
+        llStats = findViewById(R.id.llInhalerStats);
+
+
         RecyclerView.LayoutManager layoutManager;
         //layoutManager =  new LinearLayoutManager(InhalerActivity.this,LinearLayoutManager.VERTICAL,false);
         layoutManager = new GridLayoutManager(InhalerActivity.this,1,GridLayoutManager.VERTICAL,false);
@@ -145,17 +157,22 @@ public class InhalerActivity extends AppCompatActivity {
                     }
                     InhalerDataClass inhalerDataClass = new InhalerDataClass(second[0], second[1],Integer.parseInt(second[2]), second[3]);
                     myArrayList.add(inhalerDataClass);
-                    inhalerDataClass.printALL();
                 }
                 myAdapter = new inhalerAdapter(InhalerActivity.this, myArrayList);
                 recyclerView.setAdapter(myAdapter);
-                recyclerView.animate().start();
                 textView.setText("Recent Inhaler Uses");
                 itemTouchHelper.attachToRecyclerView(recyclerView);
-
-
-
+                llStats.setVisibility(View.VISIBLE);
+                int a = exaberDB.getThisWeekCount(2);
+                int b = exaberDB.getLastWeekCount(2);
+                Log.i("vlogs", "Week Count Returned " + a + b );
+                tvStats1.setText(String.valueOf(a));
+                float c = (float) a/7;
+                tvStats2.setText(String.format("%.02f",c));
+                tvStats3.setText(b + " -> " + a);
             }
+            exaberDB.close();
+
         } catch(SQLException e){
             e.printStackTrace();
         }

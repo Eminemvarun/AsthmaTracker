@@ -1,10 +1,15 @@
 package com.example.testapplication;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -55,11 +60,9 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this, LatestResearch.class));
             }
         });
-    }
 
-    //
-    // On START
-    //
+        // End of On Create
+    }
 
     @Override
     protected void onStart() {
@@ -89,5 +92,29 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    //CLEAR DATA CODE
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.sendFeedback) {
+            Intent intent = new Intent(Intent.ACTION_SENDTO);
+            intent.setData(Uri.parse("mailto:"));
+            intent.putExtra(Intent.EXTRA_EMAIL,"varun.17051998@gmail.com");
+            intent.putExtra(Intent.EXTRA_SUBJECT, "Feedback for Asthma Tracker");
+
+            if(intent.resolveActivity(getPackageManager()) != null){
+                startActivity(intent);
+            }
+
+
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

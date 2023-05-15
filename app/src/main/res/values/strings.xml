@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name"> My Asthma Stats Tracker</string>
+    <string name="app_name"> Asthma Tracker</string>
     <string name="hello">Hello World!</string>
     <string name="title_activity_exaberations">Exaberations</string>
     <!-- Strings used for fragments for navigation -->

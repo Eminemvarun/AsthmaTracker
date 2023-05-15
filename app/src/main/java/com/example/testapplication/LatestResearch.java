@@ -131,7 +131,7 @@ public class LatestResearch extends AppCompatActivity {
 
             try {
                 Log.i("vlogs", "doInBackground trying");
-                String query = "asthma%20OR%20allergies";
+                String query = "asthma";
                 URL url = new URL("https://newsdata.io/api/1/news?apikey=pub_22043a7d9e1ae8f0b692643c00ed38cc08faa&language=en&q=" + query);
                 HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
                 httpURLConnection.setRequestProperty("X-ACCESS-KEY", "pub_22043a7d9e1ae8f0b692643c00ed38cc08faa");
@@ -162,7 +162,8 @@ public class LatestResearch extends AppCompatActivity {
                         String two = articleone.getString("title");
                         String three = articleone.getString("link");
                         String one = articleone.getString("image_url");
-                        NewsDataClass newsDataClass = new NewsDataClass(one, two, three);
+                        String four = articleone.getString("pubDate");
+                        NewsDataClass newsDataClass = new NewsDataClass(one, two, three,four);
                         Log.i("vlogs", "Image url is :" + one);
                         //
                         //Downloading Image
@@ -274,7 +275,7 @@ public class LatestResearch extends AppCompatActivity {
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
                 NewsDataClass item = new NewsDataClass(jsonObject.getString("imageLink"),jsonObject.getString("title"),
-                        jsonObject.getString("link"));
+                        jsonObject.getString("link"),jsonObject.getString("date"));
                         item.setImageAvailable(jsonObject.getBoolean("imageAvailable"));
                 data.add(item);
             }

@@ -3,6 +3,7 @@ package com.example.testapplication;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,8 +13,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.ocpsoft.prettytime.PrettyTime;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.Viewholder>{
 
@@ -42,11 +48,13 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.Viewholder>{
 
         ImageView imageView;
         TextView textView;
+        TextView ago;
 
         public Viewholder(@NonNull View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.imageViewNews);
             textView = itemView.findViewById(R.id.textViewNews);
+            ago = itemView.findViewById(R.id.textViewMinutesAgo);
         }
     }
 
@@ -75,6 +83,20 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.Viewholder>{
             }
         });
 
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd kk:mm:ss");
+
+        Date convertedDate = new Date();
+
+        try {
+            convertedDate = dateFormat.parse(mdata.get(position).date);
+        } catch (ParseException e) {
+            Log.i("vlogs", "onBindViewHolder: Error Parsing date");
+            e.printStackTrace();
+        }
+
+        PrettyTime p  = new PrettyTime();
+        String datetime= p.format(convertedDate);
+        holder.ago.setText(datetime);
     }
 
     @Override

@@ -8,6 +8,15 @@ public class NewsDataClass {
     private String imageLink;
     String imageName;
     boolean imageAvailable;
+    String date;
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
 
     public boolean isImageAvailable() {
         return imageAvailable;
@@ -28,12 +37,13 @@ public class NewsDataClass {
     private String title;
     private String link;
 
-    public NewsDataClass(String imageLink, String title, String link) {
+    public NewsDataClass(String imageLink, String title, String link,String date) {
         this.imageLink = imageLink;
         this.title = title;
         this.link = link;
         this.imageName = title + "_image";
         this.imageAvailable = false;
+        this.date = date;
     }
 
     public String getImageLink() {
