@@ -13,36 +13,36 @@
         android:theme="@style/Theme.TestApplication"
         tools:targetApi="31">
         <activity
-            android:name=".LatestResearch"
+            android:name="com.envy.asthmatracker.LatestResearch"
             android:exported="false"
             android:label="Latest Articles"
             android:theme="@style/Theme.AppCompat.DayNight"
             />
         <activity
-            android:name=".InhalerActivity"
+            android:name="com.envy.asthmatracker.InhalerActivity"
             android:exported="false"
             android:label="@string/title_activity_inhaler"
             android:theme="@style/Theme.AppCompat.DayNight" />
         <activity
-            android:name=".addExaberActivity"
+            android:name="com.envy.asthmatracker.addExaberActivity"
             android:exported="false"
             android:label="Add Exaberation"
             android:theme="@style/Theme.AppCompat.DayNight">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ExaberationsActivity" />
+                android:value="com.envy.asthmatracker.ExaberationsActivity" />
         </activity>
         <activity
-            android:name=".addInhalerActivity"
+            android:name="com.envy.asthmatracker.addInhalerActivity"
             android:exported="false"
             android:label="Add Exaberation"
             android:theme="@style/Theme.AppCompat.DayNight">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".InhalerActivity" />
+                android:value="com.envy.asthmatracker.InhalerActivity" />
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name="com.envy.asthmatracker.MainActivity"
             android:exported="true"
             android:theme="@style/Theme.TestApplication.NoActionBar"
             android:label="@string/app_name">
@@ -53,7 +53,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ExaberationsActivity"
+            android:name="com.envy.asthmatracker.ExaberationsActivity"
             android:exported="false"
             android:label="Exaberations"
             android:theme="@style/Theme.AppCompat.DayNight" />

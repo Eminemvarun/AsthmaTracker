@@ -10,4 +10,5 @@
     <color name="highIntensity">#B30000</color>
     <color name="mediumIntensity">#EBCC21</color>
     <color name="lowIntensity">#4FE027</color>
+    <color name="mycolor">#A2F0FD</color>
 </resources>
