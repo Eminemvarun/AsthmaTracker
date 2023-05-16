@@ -2,6 +2,7 @@ package com.envy.asthmatracker;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -62,7 +63,13 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.Viewholder>{
     @NonNull
     @Override
     public NewsAdapter.Viewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.row3,parent,false);
+        View v;
+        if(parent.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+            v = LayoutInflater.from(parent.getContext()).inflate(R.layout.row3_land, parent, false);
+        }
+        else {
+            v = LayoutInflater.from(parent.getContext()).inflate(R.layout.row3, parent, false);
+        }
         return new Viewholder(v);
     }
 

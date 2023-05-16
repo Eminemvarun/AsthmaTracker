@@ -117,7 +117,7 @@ public class addInhalerActivity extends AppCompatActivity {
             }
 
             private boolean checkValues() {
-                return (!date.getText().toString().isEmpty()) && (!name.getText().toString().isEmpty()) && (!notes.getText().toString().isEmpty());
+                return (!date.getText().toString().isEmpty()) && (!name.getText().toString().trim().isEmpty()) && (!notes.getText().toString().trim().isEmpty());
             }
         });
     }

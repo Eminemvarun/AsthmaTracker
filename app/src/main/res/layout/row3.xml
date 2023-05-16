@@ -7,9 +7,9 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5sp"
-        app:cardCornerRadius="10sp"
-        app:cardElevation="10sp"
+        android:layout_margin="5dp"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="10dp"
         app:cardUseCompatPadding="false">
 <LinearLayout
     android:layout_width="match_parent"
@@ -36,12 +36,14 @@
             android:layout_height="wrap_content"
             android:id="@+id/textViewMinutesAgo"
             android:text="5 minutes ago"
-            android:textSize="10sp" />
+            android:fontFamily="sans-serif-light"
+            android:textSize="11sp" />
 
     <TextView
         android:layout_width="match_parent"
         android:text="This is a long sample text "
         android:id="@+id/textViewNews"
+        android:fontFamily="sans-serif-condensed"
         android:layout_gravity="center"
         android:textSize="18sp"
         android:layout_weight="2"

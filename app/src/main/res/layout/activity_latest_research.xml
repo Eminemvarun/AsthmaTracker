@@ -26,7 +26,7 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:text="Connecting "
-            android:textSize="25dp" />
+            android:textSize="25sp" />
 
 
     </LinearLayout>
@@ -35,11 +35,13 @@
         android:id="@+id/layout1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="5dp">
+        android:layout_marginTop="10dp"
+        >
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/swipeRefresh1"
             android:layout_width="match_parent"
+            android:layout_margin="5dp"
             android:layout_height="match_parent">
 
             <androidx.recyclerview.widget.RecyclerView

@@ -23,7 +23,7 @@
         <EditText
             android:id="@+id/editTextDate"
             android:layout_width="wrap_content"
-            android:layout_height="50dp"
+            android:layout_height="50sp"
             android:layout_weight="1"
             android:hint="Select"
             android:focusable="false"
@@ -38,14 +38,15 @@
         android:layout_margin="20dp"
         android:weightSum="2">
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="Exaberation Intensity"
             android:layout_weight="1">
         </TextView>
 
         <RadioGroup
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
+            android:gravity="center"
             android:layout_height="match_parent"
             android:orientation="horizontal"
             android:layout_weight="1"
@@ -78,7 +79,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Comments"
-        android:textSize="20dp"/>
+        android:textSize="20sp"/>
 
     <EditText
         android:id="@+id/editTextNote"
@@ -86,7 +87,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="text"
-        android:hint="Enter Addtional Notes"/>
+        android:hint="Enter Additional Notes"/>
 
     <Button
         android:id="@+id/submitbutton"

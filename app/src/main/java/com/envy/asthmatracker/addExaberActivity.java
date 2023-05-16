@@ -124,7 +124,7 @@ public class addExaberActivity extends AppCompatActivity {
             }
 
             private boolean checkValues() {
-                return (!date1.getText().toString().isEmpty()) && (radiogroup1.getCheckedRadioButtonId() != -1) && (!notes.getText().toString().isEmpty());
+                return (!date1.getText().toString().isEmpty()) && (radiogroup1.getCheckedRadioButtonId() != -1) && (!notes.getText().toString().trim().isEmpty());
             }
         });
     }

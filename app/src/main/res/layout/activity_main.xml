@@ -18,7 +18,7 @@
 
         <ImageView
             android:layout_width="wrap_content"
-            android:layout_height="200sp"
+            android:layout_height="200dp"
             android:src="@drawable/cough"/>
         <TextView
             android:layout_width="match_parent"
@@ -71,7 +71,7 @@
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_margin="20dp"
+        android:layout_margin="15sp"
         android:layout_height="wrap_content"
         android:text="Made with Love by a Fellow Asthamatic"
         android:layout_alignParentBottom="true"

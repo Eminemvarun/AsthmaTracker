@@ -7,10 +7,10 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5sp"
+        android:layout_margin="5dp"
         app:cardBackgroundColor="@color/teal_700"
-        app:cardCornerRadius="10sp"
-        app:cardElevation="10sp"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="10dp"
         app:cardUseCompatPadding="false">
 
         <LinearLayout
@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:weightSum="16"
             android:baselineAligned="false"
-            android:layout_margin="5sp"
+            android:layout_margin="5dp"
             android:orientation="horizontal">
 
             <LinearLayout
@@ -36,6 +36,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="12th May 1998"
+                    android:fontFamily="sans-serif-medium"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
                     android:textSize="25sp" />
@@ -44,7 +45,8 @@
                     android:id="@+id/tvNotes"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="This is along note"
+                    android:fontFamily="sans-serif-light"
+                    android:text="This is a long note"
                     android:textColor="@color/white"
                     android:textSize="20sp" />
             </LinearLayout>
@@ -53,7 +55,7 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="10sp"
+                android:layout_margin="10dp"
                 android:layout_weight="5"
                 android:layout_gravity="end|center"
                 android:orientation="vertical">
@@ -64,8 +66,9 @@
                     android:layout_height="wrap_content"
                     android:shadowColor="@color/white"
                     android:text="Paracetamo"
-                    android:layout_gravity="right"
-                    android:gravity="right"
+                    android:fontFamily="sans-serif-smallcaps"
+                    android:layout_gravity="end"
+                    android:gravity="end"
                     android:textColor="@color/lowIntensity"
                     android:textSize="20sp" />
 
@@ -74,6 +77,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="2 Puffs"
+                    android:fontFamily="casual"
                     android:layout_gravity="right"
                     android:gravity="right"
                     android:textColor="@color/white"

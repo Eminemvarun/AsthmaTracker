@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -51,16 +52,23 @@ public class LatestResearch extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_latest_research);
-
+        //Setup R references and empty Recycler View
         swipeRefreshLayout = findViewById(R.id.swipeRefresh1);
         linearLayoutLoading = findViewById(R.id.llLoading);
         linearLayout = findViewById(R.id.layout1);
         myRecyclerView = findViewById(R.id.recyclerViewResearch);
         progressBar2 = findViewById(R.id.progressTwo);
-        layoutManager = new GridLayoutManager(LatestResearch.this, 1, GridLayoutManager.VERTICAL, false);
+        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+        layoutManager = new GridLayoutManager(LatestResearch.this, 2, GridLayoutManager.VERTICAL, false);
+        }
+        else{
+            layoutManager = new GridLayoutManager(LatestResearch.this, 1, GridLayoutManager.VERTICAL, false);
+
+        }
         myRecyclerView.setLayoutManager(layoutManager);
         mynewsadapter = new NewsAdapter(LatestResearch.this,new ArrayList<>());
         myRecyclerView.setAdapter(mynewsadapter);
+
 
         if(isCacheFileExists(LatestResearch.this)){
             linearLayout.setVisibility(View.VISIBLE);
@@ -97,6 +105,7 @@ public class LatestResearch extends AppCompatActivity {
         TextView loadingtext;
         ProgressBar progressBar2;
         LinearLayout linearLayoutLoading;
+        LinearLayout linearLayout;
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
