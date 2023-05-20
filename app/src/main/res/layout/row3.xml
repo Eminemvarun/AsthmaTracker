@@ -13,17 +13,23 @@
         app:cardUseCompatPadding="false">
 <LinearLayout
     android:layout_width="match_parent"
-    android:weightSum="3"
     android:layout_margin="10dp"
+    android:orientation="vertical"
     android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
 
-    <ImageView
+        <ImageView
         android:layout_width="0dp"
+        android:paddingEnd="10dp"
         android:id="@+id/imageViewNews"
+        android:maxHeight="60dp"
         android:layout_gravity="center"
         android:src="@drawable/cough"
         android:layout_weight="1"
-        android:layout_height="60sp"/>
+        android:layout_height="60dp"/>
 
     <LinearLayout
         android:layout_width="0dp"
@@ -46,10 +52,40 @@
         android:fontFamily="sans-serif-condensed"
         android:layout_gravity="center"
         android:textSize="18sp"
-        android:layout_weight="2"
         android:layout_height="wrap_content"/>
     </LinearLayout>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:id="@+id/arrowHolder"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/baseline_arrow_downward_24"
+                />
+        </LinearLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:id="@+id/tvDescription"
+        android:visibility="gone"
+        android:layout_margin="10dp"
+        android:layout_height="wrap_content"
+        android:text="This is a very very very long string This is a very very very long string This is a very very very long string"
+        />
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:layout_marginRight="10dp"
+    android:visibility="gone"
+    android:layout_gravity="end"
+    android:textStyle="italic"
+    android:linksClickable="true"
+    android:textSize="12sp"
+    android:id="@+id/linkToArticle"
+    android:text="bloomberg.com"
+    android:drawableStart="@drawable/baseline_arrow_outward_24"
+    />
 </LinearLayout>
+
     </androidx.cardview.widget.CardView>
 
 </RelativeLayout>

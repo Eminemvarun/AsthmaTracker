@@ -11,6 +11,11 @@
         app:cardCornerRadius="10dp"
         app:cardElevation="10dp"
         app:cardUseCompatPadding="false">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
 <LinearLayout
     android:layout_width="match_parent"
     android:weightSum="3"
@@ -21,9 +26,10 @@
         android:layout_width="0dp"
         android:id="@+id/imageViewNews"
         android:layout_gravity="center"
+        android:maxHeight="100dp"
         android:src="@drawable/cough"
         android:layout_weight="1"
-        android:layout_height="100sp"/>
+        android:layout_height="100dp"/>
 
     <LinearLayout
         android:layout_width="0dp"
@@ -50,6 +56,34 @@
 
         android:layout_height="match_parent"/>
     </LinearLayout>
+    <ImageView
+        android:layout_width="wrap_content"
+        android:id="@+id/arrowHolder"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:src="@drawable/baseline_arrow_downward_24"
+        />
+</LinearLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:id="@+id/tvDescription"
+                android:layout_margin="10dp"
+                android:layout_height="wrap_content"
+                android:text="This is a very very very long string This is a very very very long string This is a very very very long string"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:layout_marginEnd="5dp"
+                android:layout_gravity="end"
+                android:textSize="13sp"
+                android:linksClickable="true"
+                android:id="@+id/linkToArticle"
+                android:text="bloomberg.com"
+                android:drawableStart="@drawable/baseline_arrow_outward_24"
+                />
+
 </LinearLayout>
     </androidx.cardview.widget.CardView>
 

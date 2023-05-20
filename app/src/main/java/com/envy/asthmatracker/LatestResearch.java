@@ -2,7 +2,9 @@ package com.envy.asthmatracker;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SimpleItemAnimator;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Context;
@@ -63,11 +65,11 @@ public class LatestResearch extends AppCompatActivity {
         }
         else{
             layoutManager = new GridLayoutManager(LatestResearch.this, 1, GridLayoutManager.VERTICAL, false);
-
         }
         myRecyclerView.setLayoutManager(layoutManager);
         mynewsadapter = new NewsAdapter(LatestResearch.this,new ArrayList<>());
         myRecyclerView.setAdapter(mynewsadapter);
+        myRecyclerView.setHasFixedSize(true);
 
 
         if(isCacheFileExists(LatestResearch.this)){
@@ -140,8 +142,8 @@ public class LatestResearch extends AppCompatActivity {
 
             try {
                 Log.i("vlogs", "doInBackground trying");
-                String query = "asthma";
-                URL url = new URL("https://newsdata.io/api/1/news?apikey=pub_22043a7d9e1ae8f0b692643c00ed38cc08faa&language=en&q=" + query);
+                String query = "asthma%20OR%20allergy";
+                URL url = new URL("https://newsdata.io/api/1/news?apikey=pub_22043a7d9e1ae8f0b692643c00ed38cc08faa&language=en&qInTitle=" + query);
                 HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
                 httpURLConnection.setRequestProperty("X-ACCESS-KEY", "pub_22043a7d9e1ae8f0b692643c00ed38cc08faa");
                 httpURLConnection.connect();
@@ -172,7 +174,9 @@ public class LatestResearch extends AppCompatActivity {
                         String three = articleone.getString("link");
                         String one = articleone.getString("image_url");
                         String four = articleone.getString("pubDate");
-                        NewsDataClass newsDataClass = new NewsDataClass(one, two, three,four);
+                        String five = articleone.getString("description");
+                        String six = articleone.getString("source_id");
+                        NewsDataClass newsDataClass = new NewsDataClass(one, two, three,four,five,six);
                         Log.i("vlogs", "Image url is :" + one);
                         //
                         //Downloading Image
@@ -185,9 +189,11 @@ public class LatestResearch extends AppCompatActivity {
                             if (connection.getResponseCode() == 200) {
                                 InputStream input = connection.getInputStream();
                                 Bitmap myBitmap = BitmapFactory.decodeStream(input);
-                                Log.e("vlogs", "Bitmap returned");
+                                Log.e("vlogs", "Bitmap returned of size: " + myBitmap.getByteCount()/1024/1024 +"Mb");
+                                if(myBitmap.getByteCount()/1024/1024 <100){
                                 newsDataClass.setImage(myBitmap);
                                 newsDataClass.setImageAvailable(true);
+                                }
                             }
                         }
                         dataObject.add(newsDataClass);
@@ -284,7 +290,8 @@ public class LatestResearch extends AppCompatActivity {
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
                 NewsDataClass item = new NewsDataClass(jsonObject.getString("imageLink"),jsonObject.getString("title"),
-                        jsonObject.getString("link"),jsonObject.getString("date"));
+                        jsonObject.getString("link"),jsonObject.getString("date"),jsonObject.getString("description")
+                ,jsonObject.getString("source"));
                         item.setImageAvailable(jsonObject.getBoolean("imageAvailable"));
                 data.add(item);
             }
@@ -349,7 +356,7 @@ public class LatestResearch extends AppCompatActivity {
                     inputStream.close();
                 } catch (IOException e) {
                     e.printStackTrace();
-                    Toast.makeText(context, "Error Reading image cache", Toast.LENGTH_SHORT).show();
+                    Log.i("vlogs","Error Reading image cache: " + e.getMessage());
                 }
             }
         }

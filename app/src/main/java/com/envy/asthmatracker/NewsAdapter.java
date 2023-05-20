@@ -1,11 +1,14 @@
 package com.envy.asthmatracker;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.net.Uri;
+import android.transition.TransitionManager;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -48,15 +51,17 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.Viewholder>{
 
     public class Viewholder extends RecyclerView.ViewHolder{
 
-        ImageView imageView;
-        TextView textView;
-        TextView ago;
+        ImageView imageView,icon;
+        TextView textView,ago,desc,linkToArticle;
 
         public Viewholder(@NonNull View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.imageViewNews);
             textView = itemView.findViewById(R.id.textViewNews);
             ago = itemView.findViewById(R.id.textViewMinutesAgo);
+            desc= itemView.findViewById(R.id.tvDescription);
+            linkToArticle = itemView.findViewById(R.id.linkToArticle);
+            icon = itemView.findViewById(R.id.arrowHolder);
         }
     }
 
@@ -73,16 +78,33 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.Viewholder>{
         return new Viewholder(v);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onBindViewHolder(@NonNull NewsAdapter.Viewholder holder, int position) {
         holder.itemView.setTag(mdata.get(position));
-
+        holder.desc.setText(mdata.get(position).getDescription());
+        holder.linkToArticle.setText(mdata.get(position).getSource());
         holder.textView.setText(mdata.get(position).getTitle());
-        if(mdata.get(position).getImage()!= null){
+        if(mdata.get(holder.getAdapterPosition()).isImageAvailable()) {
             holder.imageView.setImageBitmap(mdata.get(position).getImage());
         }
+        else{
+        }
         holder.textView.setLinksClickable(true);
-        holder.textView.setOnClickListener(new View.OnClickListener() {
+        holder.linkToArticle.setVisibility(mdata.get(position).isVisible() ? View.VISIBLE: View.GONE);
+        holder.desc.setVisibility(mdata.get(position).isVisible() ? View.VISIBLE: View.GONE);
+
+        int residDown = mContext.getResources().getIdentifier("baseline_arrow_downward_24","drawable", mContext.getPackageName());
+        int residUp = mContext.getResources().getIdentifier("baseline_arrow_upward_24","drawable", mContext.getPackageName());
+
+        if(mdata.get(holder.getAdapterPosition()).isVisible()){
+            holder.icon.setImageResource(residUp);
+        }else{
+            holder.icon.setImageResource(residDown);
+        }
+
+        //Link to article listener
+        holder.linkToArticle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(Intent.ACTION_VIEW);
@@ -90,6 +112,15 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.Viewholder>{
                 mContext.startActivity(i);
             }
         });
+            holder.textView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mdata.get(holder.getAdapterPosition()).setVisible(!mdata.get(holder.getAdapterPosition()).isVisible());
+                    notifyItemChanged(holder.getAdapterPosition());
+                }
+            });
+
+
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd kk:mm:ss");
 

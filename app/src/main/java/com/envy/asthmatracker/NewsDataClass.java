@@ -4,11 +4,51 @@ import android.graphics.Bitmap;
 
 public class NewsDataClass {
 
-    private Bitmap image;
-    private String imageLink;
+    boolean visible = false;
     String imageName;
     boolean imageAvailable;
+    String description;
     String date;
+    String source;
+    private Bitmap image;
+    private String imageLink;
+    private String title;
+    private String link;
+
+    public NewsDataClass(String imageLink, String title, String link, String date, String desc, String source) {
+        this.imageLink = imageLink;
+        this.title = title;
+        this.link = link;
+        this.imageName = title.substring(0,15) + "_image";
+        this.imageAvailable = false;
+        this.date = date;
+        this.description = desc;
+        this.source = source;
+    }
+
+    public boolean isVisible() {
+        return visible;
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
+    }
 
     public String getDate() {
         return date;
@@ -32,18 +72,6 @@ public class NewsDataClass {
 
     public void setImageName(String imageName) {
         this.imageName = imageName;
-    }
-
-    private String title;
-    private String link;
-
-    public NewsDataClass(String imageLink, String title, String link,String date) {
-        this.imageLink = imageLink;
-        this.title = title;
-        this.link = link;
-        this.imageName = title + "_image";
-        this.imageAvailable = false;
-        this.date = date;
     }
 
     public String getImageLink() {
