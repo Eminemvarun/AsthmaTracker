@@ -1,12 +1,5 @@
 package com.envy.asthmatracker;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.SimpleItemAnimator;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
@@ -20,7 +13,11 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.envy.asthmatracker.R;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -60,36 +57,34 @@ public class LatestResearch extends AppCompatActivity {
         linearLayout = findViewById(R.id.layout1);
         myRecyclerView = findViewById(R.id.recyclerViewResearch);
         progressBar2 = findViewById(R.id.progressTwo);
-        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
-        layoutManager = new GridLayoutManager(LatestResearch.this, 2, GridLayoutManager.VERTICAL, false);
-        }
-        else{
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            layoutManager = new GridLayoutManager(LatestResearch.this, 1, GridLayoutManager.HORIZONTAL, false);
+        } else {
             layoutManager = new GridLayoutManager(LatestResearch.this, 1, GridLayoutManager.VERTICAL, false);
         }
         myRecyclerView.setLayoutManager(layoutManager);
-        mynewsadapter = new NewsAdapter(LatestResearch.this,new ArrayList<>());
+        mynewsadapter = new NewsAdapter(LatestResearch.this, new ArrayList<>());
         myRecyclerView.setAdapter(mynewsadapter);
         myRecyclerView.setHasFixedSize(true);
 
 
-        if(isCacheFileExists(LatestResearch.this)){
+        if (isCacheFileExists(LatestResearch.this)) {
             linearLayout.setVisibility(View.VISIBLE);
             linearLayoutLoading.setVisibility(View.GONE);
             progressBar2.setVisibility(View.GONE);
             ArrayList<NewsDataClass> mylist = readDataFromCache(LatestResearch.this);
-            if(!mylist.isEmpty()){
-                mylist = readImagesFromCache(LatestResearch.this,mylist);
-            myRecyclerView.setHasFixedSize(true);
-            mynewsadapter.addAll(mylist);
-            mynewsadapter.notifyDataSetChanged();
-            }
-            else{
+            if (!mylist.isEmpty()) {
+                mylist = readImagesFromCache(LatestResearch.this, mylist);
+                myRecyclerView.setHasFixedSize(true);
+                mynewsadapter.addAll(mylist);
+                mynewsadapter.notifyDataSetChanged();
+            } else {
                 Toast.makeText(LatestResearch.this, "Data Returned is empty", Toast.LENGTH_SHORT).show();
             }
-        }else{
+        } else {
 
-        downloadData downloadData = new downloadData();
-        downloadData.execute();
+            downloadData downloadData = new downloadData();
+            downloadData.execute();
         }
 
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -101,136 +96,6 @@ public class LatestResearch extends AppCompatActivity {
             }
         });
         // End of On Create
-    }
-
-    public class downloadData extends AsyncTask<String,zMyDataType, ArrayList<NewsDataClass>> {
-        TextView loadingtext;
-        ProgressBar progressBar2;
-        LinearLayout linearLayoutLoading;
-        LinearLayout linearLayout;
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            progressBar2 = findViewById(R.id.progressTwo);
-            loadingtext = findViewById(R.id.tvDownloading);
-            linearLayoutLoading = findViewById(R.id.llLoading);
-            linearLayout = findViewById(R.id.layout1);
-            mynewsadapter.clearAll();
-            }
-
-        @Override
-        protected void onProgressUpdate(zMyDataType... values) {
-            int progress = values[0].getPosition();
-            String text = "Downloading \n";
-            loadingtext.setText(text);
-            progressBar2.setIndeterminate(false);
-            progressBar2.setProgress(progress,true);
-
-            if(values[0].getData() != null) {
-                linearLayout.setVisibility(View.VISIBLE);
-                linearLayoutLoading.setVisibility(View.GONE);
-                mynewsadapter.addData(values[0].getData());
-                mynewsadapter.notifyDataSetChanged();
-            }
-
-            super.onProgressUpdate(values);
-
-        }
-
-        @Override
-        protected ArrayList<NewsDataClass> doInBackground(String... params) {
-
-            try {
-                Log.i("vlogs", "doInBackground trying");
-                String query = "asthma%20OR%20allergy";
-                URL url = new URL("https://newsdata.io/api/1/news?apikey=pub_22043a7d9e1ae8f0b692643c00ed38cc08faa&language=en&qInTitle=" + query);
-                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
-                httpURLConnection.setRequestProperty("X-ACCESS-KEY", "pub_22043a7d9e1ae8f0b692643c00ed38cc08faa");
-                httpURLConnection.connect();
-                if (httpURLConnection.getResponseCode() == 200) {
-                    publishProgress(new zMyDataType(null,20));
-                    InputStream inputStream = httpURLConnection.getInputStream();
-                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-                    String data = "";
-                    String line = "";
-                    while (line != null) {
-                        line = bufferedReader.readLine();
-                        data = data + line;
-                    }
-                    Log.i("vlogs", "Data Recieved Sucessfully: " + data.toString());
-                    publishProgress(new zMyDataType(null,50));
-                    //
-                    //Date saved to data string
-                    //
-
-                    //
-                    ArrayList<NewsDataClass> dataObject = new ArrayList<>();
-                    JSONObject rootJSON = new JSONObject(data);
-                    JSONArray results = rootJSON.getJSONArray("results");
-                    int length = results.length();
-                    for (int i = 0; i < length; i++) {
-                        JSONObject articleone = results.getJSONObject(i);
-                        String two = articleone.getString("title");
-                        String three = articleone.getString("link");
-                        String one = articleone.getString("image_url");
-                        String four = articleone.getString("pubDate");
-                        String five = articleone.getString("description");
-                        String six = articleone.getString("source_id");
-                        NewsDataClass newsDataClass = new NewsDataClass(one, two, three,four,five,six);
-                        Log.i("vlogs", "Image url is :" + one);
-                        //
-                        //Downloading Image
-                        //
-                        if(one!=null && !one.equals("null")) {
-                            URL url2 = new URL(one);
-                            HttpURLConnection connection = (HttpURLConnection) url2.openConnection();
-                            connection.setDoInput(true);
-                            connection.connect();
-                            if (connection.getResponseCode() == 200) {
-                                InputStream input = connection.getInputStream();
-                                Bitmap myBitmap = BitmapFactory.decodeStream(input);
-                                Log.e("vlogs", "Bitmap returned of size: " + myBitmap.getByteCount()/1024/1024 +"Mb");
-                                if(myBitmap.getByteCount()/1024/1024 <100){
-                                newsDataClass.setImage(myBitmap);
-                                newsDataClass.setImageAvailable(true);
-                                }
-                            }
-                        }
-                        dataObject.add(newsDataClass);
-                        publishProgress(new zMyDataType(newsDataClass,(int)(i+1)*100/length/2 +50));
-                    }
-                    return dataObject;
-                }
-                Log.i("vlogs", "Request Incomplete Error Code : " + httpURLConnection.getResponseCode()
-                + "\n Error Details : " + httpURLConnection.getResponseMessage() );
-            } catch (Exception e) {
-                Log.i("vlogs", "Exception caught: " + e.getMessage());
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(ArrayList<NewsDataClass> s) {
-            super.onPostExecute(s);
-            if (s != null) {
-                progressBar2.setVisibility(View.GONE);
-                myRecyclerView = findViewById(R.id.recyclerViewResearch);
-                swipeRefreshLayout.setRefreshing(false);
-                myRecyclerView.setHasFixedSize(true);
-                writeDataToCache(s,LatestResearch.this);
-                writeImagesToCache(s,LatestResearch.this);
-            } else{
-                Toast.makeText(LatestResearch.this, "Connection Failed", Toast.LENGTH_SHORT).show();
-                if(!isCacheFileExists(LatestResearch.this)){
-                    finish();
-                }
-                else{
-                    swipeRefreshLayout.setRefreshing(false);
-                    progressBar2.setVisibility(View.GONE);
-                }
-            }
-        }
     }
 
     public void writeDataToCache(ArrayList<NewsDataClass> data, Context context) {
@@ -261,8 +126,6 @@ public class LatestResearch extends AppCompatActivity {
         }
     }
 
-
-
     public ArrayList<NewsDataClass> readDataFromCache(Context context) {
         ArrayList<NewsDataClass> data = null;
 
@@ -289,17 +152,17 @@ public class LatestResearch extends AppCompatActivity {
 
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
-                NewsDataClass item = new NewsDataClass(jsonObject.getString("imageLink"),jsonObject.getString("title"),
-                        jsonObject.getString("link"),jsonObject.getString("date"),jsonObject.getString("description")
-                ,jsonObject.getString("source"));
-                        item.setImageAvailable(jsonObject.getBoolean("imageAvailable"));
+                NewsDataClass item = new NewsDataClass(jsonObject.getString("imageLink"), jsonObject.getString("title"),
+                        jsonObject.getString("link"), jsonObject.getString("date"), jsonObject.getString("description")
+                        , jsonObject.getString("source"));
+                item.setImageAvailable(jsonObject.getBoolean("imageAvailable"));
                 data.add(item);
             }
 
             reader.close();
         } catch (IOException | JSONException e) {
             e.printStackTrace();
-            Toast.makeText(context, "Error Reading cache" +e.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Error Reading cache" + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
 
         return data;
@@ -321,7 +184,7 @@ public class LatestResearch extends AppCompatActivity {
         File cacheDir = context.getCacheDir();
 
         for (NewsDataClass item : data) {
-            if(item.isImageAvailable()) {
+            if (item.isImageAvailable()) {
                 // Create a file object for the image file
                 File imageFile = new File(cacheDir, item.getImageName());
 
@@ -344,7 +207,7 @@ public class LatestResearch extends AppCompatActivity {
         File cacheDir = context.getCacheDir();
 
         for (NewsDataClass item : data) {
-            if(item.imageAvailable) {
+            if (item.imageAvailable) {
                 // Create a file object for the image file
                 File imageFile = new File(cacheDir, item.getImageName());
 
@@ -356,12 +219,142 @@ public class LatestResearch extends AppCompatActivity {
                     inputStream.close();
                 } catch (IOException e) {
                     e.printStackTrace();
-                    Log.i("vlogs","Error Reading image cache: " + e.getMessage());
+                    Log.i("vlogs", "Error Reading image cache: " + e.getMessage());
                 }
             }
         }
 
         return data;
+    }
+
+    public class downloadData extends AsyncTask<String, zMyDataType, ArrayList<NewsDataClass>> {
+        TextView loadingtext;
+        ProgressBar progressBar2;
+        LinearLayout linearLayoutLoading;
+        LinearLayout linearLayout;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressBar2 = findViewById(R.id.progressTwo);
+            loadingtext = findViewById(R.id.tvDownloading);
+            linearLayoutLoading = findViewById(R.id.llLoading);
+            linearLayout = findViewById(R.id.layout1);
+            mynewsadapter.clearAll();
+        }
+
+        @Override
+        protected void onProgressUpdate(zMyDataType... values) {
+            int progress = values[0].getPosition();
+            String text = "Downloading \n";
+            loadingtext.setText(text);
+            progressBar2.setIndeterminate(false);
+            progressBar2.setProgress(progress, true);
+
+            if (values[0].getData() != null) {
+                linearLayout.setVisibility(View.VISIBLE);
+                linearLayoutLoading.setVisibility(View.GONE);
+                mynewsadapter.addData(values[0].getData());
+                mynewsadapter.notifyDataSetChanged();
+            }
+
+            super.onProgressUpdate(values);
+
+        }
+
+        @Override
+        protected ArrayList<NewsDataClass> doInBackground(String... params) {
+
+            try {
+                Log.i("vlogs", "doInBackground trying");
+                String query = "asthma%20OR%20allergy";
+                URL url = new URL("https://newsdata.io/api/1/news?apikey=pub_22043a7d9e1ae8f0b692643c00ed38cc08faa&language=en&qInTitle=" + query);
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setRequestProperty("X-ACCESS-KEY", "pub_22043a7d9e1ae8f0b692643c00ed38cc08faa");
+                httpURLConnection.connect();
+                if (httpURLConnection.getResponseCode() == 200) {
+                    publishProgress(new zMyDataType(null, 20));
+                    InputStream inputStream = httpURLConnection.getInputStream();
+                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+                    String data = "";
+                    String line = "";
+                    while (line != null) {
+                        line = bufferedReader.readLine();
+                        data = data + line;
+                    }
+                    Log.i("vlogs", "Data Recieved Sucessfully: " + data);
+                    publishProgress(new zMyDataType(null, 50));
+                    //
+                    //Date saved to data string
+                    //
+
+                    //
+                    ArrayList<NewsDataClass> dataObject = new ArrayList<>();
+                    JSONObject rootJSON = new JSONObject(data);
+                    JSONArray results = rootJSON.getJSONArray("results");
+                    int length = results.length();
+                    for (int i = 0; i < length; i++) {
+                        JSONObject articleone = results.getJSONObject(i);
+                        String two = articleone.getString("title");
+                        String three = articleone.getString("link");
+                        String one = articleone.getString("image_url");
+                        String four = articleone.getString("pubDate");
+                        String five = articleone.getString("description");
+                        String six = articleone.getString("source_id");
+                        NewsDataClass newsDataClass = new NewsDataClass(one, two, three, four, five, six);
+                        Log.i("vlogs", "Image url is :" + one);
+                        //
+                        //Downloading Image
+                        //
+                        if (one != null && !one.equals("null")) {
+                            URL url2 = new URL(one);
+                            HttpURLConnection connection = (HttpURLConnection) url2.openConnection();
+                            connection.setDoInput(true);
+                            connection.connect();
+                            if (connection.getResponseCode() == 200) {
+                                InputStream input = connection.getInputStream();
+                                Bitmap myBitmap = BitmapFactory.decodeStream(input);
+                                Log.e("vlogs", "Bitmap returned of size: " + myBitmap.getByteCount() / 1024 / 1024 + "Mb");
+                                if (myBitmap.getByteCount() / 1024 / 1024 < 100) {
+                                    newsDataClass.setImage(myBitmap);
+                                    newsDataClass.setImageAvailable(true);
+                                }
+                            }
+                        }
+                        dataObject.add(newsDataClass);
+                        publishProgress(new zMyDataType(newsDataClass, (int) (i + 1) * 100 / length / 2 + 50));
+                    }
+                    return dataObject;
+                }
+                Log.i("vlogs", "Request Incomplete Error Code : " + httpURLConnection.getResponseCode()
+                        + "\n Error Details : " + httpURLConnection.getResponseMessage());
+            } catch (Exception e) {
+                Log.i("vlogs", "Exception caught: " + e.getMessage());
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<NewsDataClass> s) {
+            super.onPostExecute(s);
+            if (s != null) {
+                progressBar2.setVisibility(View.GONE);
+                myRecyclerView = findViewById(R.id.recyclerViewResearch);
+                swipeRefreshLayout.setRefreshing(false);
+                myRecyclerView.setHasFixedSize(true);
+                writeDataToCache(s, LatestResearch.this);
+                writeImagesToCache(s, LatestResearch.this);
+            } else {
+                Toast.makeText(LatestResearch.this, "Connection Failed", Toast.LENGTH_SHORT).show();
+                if (!isCacheFileExists(LatestResearch.this)) {
+                    finish();
+                } else {
+                    swipeRefreshLayout.setRefreshing(false);
+                    progressBar2.setVisibility(View.GONE);
+                }
+            }
+        }
     }
 
 

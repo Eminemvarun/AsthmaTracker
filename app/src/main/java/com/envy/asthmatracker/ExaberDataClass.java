@@ -10,7 +10,8 @@ public class ExaberDataClass {
     public int mIntensity;
     public String mIntensity_String;
     public String mNotes;
-    public ExaberDataClass(String date,int intensity, String notes){
+
+    public ExaberDataClass(String date, int intensity, String notes) {
         this.mDate = date;
         this.mIntensity = intensity;
 
@@ -35,16 +36,17 @@ public class ExaberDataClass {
 
         try {
             String[] mystring = date.split("-");
-            Calendar calendar =  Calendar.getInstance();
-            calendar.set(Integer.parseInt(mystring[0]),Integer.parseInt(mystring[1]),Integer.parseInt(mystring[2]));
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(Integer.parseInt(mystring[0]), Integer.parseInt(mystring[1]), Integer.parseInt(mystring[2]));
             Month month = Month.of(Integer.parseInt(mystring[1]));
-            return calendar.get(Calendar.DAY_OF_MONTH) + " " +month.toString() +" " + calendar.get(Calendar.YEAR);
-        }catch (Exception e){
+            return calendar.get(Calendar.DAY_OF_MONTH) + " " + month.toString() + " " + calendar.get(Calendar.YEAR);
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
     }
-    public void logEverything (String date){
+
+    public void logEverything(String date) {
 
     }
 }

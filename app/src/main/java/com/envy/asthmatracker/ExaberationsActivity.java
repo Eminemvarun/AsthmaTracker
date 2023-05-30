@@ -18,7 +18,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.envy.asthmatracker.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.sql.SQLException;
@@ -26,7 +25,7 @@ import java.sql.SQLException;
 public class ExaberationsActivity extends AppCompatActivity {
 
 
-    TextView myTextView,tvStats1,tvStats2,tvStats3;
+    TextView myTextView, tvStats1, tvStats2, tvStats3;
     LinearLayout llStats;
     ListView myListView;
     ArrayAdapter<String> myArrayAdapter;
@@ -95,7 +94,7 @@ public class ExaberationsActivity extends AppCompatActivity {
                 llStats.setVisibility(View.VISIBLE);
                 int thisWeekCount = exaberDB.getThisWeekCount(1);
                 int lastWeekCount = exaberDB.getLastWeekCount(1);
-                float v = (float)thisWeekCount/7;
+                float v = (float) thisWeekCount / 7;
                 Log.i("vlogs", "FLoat Value: " + v);
                 tvStats1.setText(String.valueOf(thisWeekCount));
                 tvStats2.setText(String.format("%.02f", v));
@@ -120,12 +119,12 @@ public class ExaberationsActivity extends AppCompatActivity {
                 builder.setMessage("Delete this entry?")
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                try{
-                                    ExaberDB exaberDB =  new ExaberDB(ExaberationsActivity.this);
+                                try {
+                                    ExaberDB exaberDB = new ExaberDB(ExaberationsActivity.this);
                                     exaberDB.open();
                                     Log.i("vlogs", "Long click code ran");
                                     String colon = "\"";
-                                    exaberDB.deleteThisData(1,colon + exaberDataClass.mDate + colon);
+                                    exaberDB.deleteThisData(1, colon + exaberDataClass.mDate + colon);
                                     exaberDB.close();
                                     myfirstadapter.notifyDataSetChanged();
                                     recreate();

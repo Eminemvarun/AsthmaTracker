@@ -57,6 +57,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:id="@+id/arrowHolder"
+                android:visibility="gone"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:src="@drawable/baseline_arrow_downward_24"
@@ -65,8 +66,8 @@
     <TextView
         android:layout_width="match_parent"
         android:id="@+id/tvDescription"
-        android:visibility="gone"
         android:layout_margin="10dp"
+        android:textSize="15sp"
         android:layout_height="wrap_content"
         android:text="This is a very very very long string This is a very very very long string This is a very very very long string"
         />
@@ -75,7 +76,6 @@
     android:layout_height="wrap_content"
     android:clickable="true"
     android:layout_marginRight="10dp"
-    android:visibility="gone"
     android:layout_gravity="end"
     android:textStyle="italic"
     android:linksClickable="true"

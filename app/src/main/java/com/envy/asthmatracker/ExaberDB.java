@@ -57,8 +57,8 @@ public class ExaberDB {
         cv.put(KEY2_DATE, date);
         cv.put(KEY2_NAME, name);
         cv.put(KEY2_PUFFS, puffs);
-        cv.put(KEY2_NOTES,notes);
-        Log.i("vlogs", "createEntry: Data to be added" +date +name+puffs +notes);
+        cv.put(KEY2_NOTES, notes);
+        Log.i("vlogs", "createEntry: Data to be added" + date + name + puffs + notes);
         return myDatabase.insert(DATABASE_TABLE_TWO, null, cv);
     }
 
@@ -83,7 +83,7 @@ public class ExaberDB {
             return Result;
         }
         if (id == 2) {
-            String[] cols = new String[]{KEY2_DATE, KEY2_NAME, KEY2_PUFFS,KEY2_NOTES};
+            String[] cols = new String[]{KEY2_DATE, KEY2_NAME, KEY2_PUFFS, KEY2_NOTES};
             Cursor cursor = myDatabase.query(DATABASE_TABLE_TWO, cols, null, null, null, null, "_date DESC");
             String Result = "";
 
@@ -116,13 +116,13 @@ public class ExaberDB {
         }
     }
 
-    public void deleteThisData(int i,String date){
-        if(i==2) {
-            myDatabase.delete(DATABASE_TABLE_TWO,"_date = " +date , null);
+    public void deleteThisData(int i, String date) {
+        if (i == 2) {
+            myDatabase.delete(DATABASE_TABLE_TWO, "_date = " + date, null);
         }
 
-        if(i==1) {
-            myDatabase.delete(DATABASE_TABLE_ONE,"_date = " +date , null);
+        if (i == 1) {
+            myDatabase.delete(DATABASE_TABLE_ONE, "_date = " + date, null);
         }
     }
 
@@ -153,8 +153,9 @@ public class ExaberDB {
         }
         return result;
     }
+
     public int getThisWeekCount(int i) {
-        if(i==1) {
+        if (i == 1) {
             int result = 0;
             Cursor cursor = myDatabase.rawQuery("Select COUNT(_id) FROM Exaberations WHERE _date >= date('now', '-7 days')", null);
             Log.i("vlogs", "Cursor Count is " + cursor.getCount());
@@ -165,7 +166,7 @@ public class ExaberDB {
             cursor.close();
             Log.i("vlog", "getThisWeekCount: " + result);
             return result;
-        } else if(i==2){
+        } else if (i == 2) {
             int result = 0;
             Cursor cursor = myDatabase.rawQuery("Select COUNT(_id) FROM InhalerUse WHERE _date >= date('now', '-7 days')", null);
             Log.i("vlogs", "Cursor Count is " + cursor.getCount());
@@ -176,11 +177,11 @@ public class ExaberDB {
             cursor.close();
             Log.i("vlog", "getThisWeekCount: " + result);
             return result;
-        }else return 0;
+        } else return 0;
     }
 
     public int getLastWeekCount(int i) {
-        if(i==1) {
+        if (i == 1) {
             int result = 0;
             Cursor cursor = myDatabase.rawQuery("Select COUNT(_id) FROM Exaberations " +
                     "WHERE _date >= date('now', '-14 days') AND " +
@@ -193,7 +194,7 @@ public class ExaberDB {
             cursor.close();
             Log.i("vlog", "getThisWeekCount: " + result);
             return result;
-        }else if(i==2){
+        } else if (i == 2) {
             int result = 0;
             Cursor cursor = myDatabase.rawQuery("Select COUNT(_id) FROM InhalerUse " +
                     "WHERE _date >= date('now', '-14 days') AND " +
@@ -206,7 +207,7 @@ public class ExaberDB {
             cursor.close();
             Log.i("vlog", "getThisWeekCount: " + result);
             return result;
-        }else return 0;
+        } else return 0;
     }
 
 

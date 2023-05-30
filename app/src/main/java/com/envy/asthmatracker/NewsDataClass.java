@@ -19,7 +19,7 @@ public class NewsDataClass {
         this.imageLink = imageLink;
         this.title = title;
         this.link = link;
-        this.imageName = title.substring(0,15) + "_image";
+        this.imageName = title.substring(0, 15) + "_image";
         this.imageAvailable = false;
         this.date = date;
         this.description = desc;

@@ -15,8 +15,6 @@ import android.widget.Toast;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.envy.asthmatracker.R;
-
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.Calendar;
@@ -26,7 +24,7 @@ public class addExaberActivity extends AppCompatActivity {
     LinearLayout mylayout;
     EditText notes;
     RadioGroup radiogroup1;
-    RadioButton r1,r2,r3;
+    RadioButton r1, r2, r3;
     Button submit;
     DatePickerDialog datePickerDialog;
 
@@ -37,10 +35,10 @@ public class addExaberActivity extends AppCompatActivity {
 
         ActionBar actionBar = getSupportActionBar();
 
-        if(actionBar!=null) {
+        if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setDisplayShowHomeEnabled(true);
-        actionBar.setTitle(" Add Exaberation Occurrence");
+            actionBar.setTitle(" Add Exaberation Occurrence");
 
         }
 
@@ -73,7 +71,9 @@ public class addExaberActivity extends AppCompatActivity {
                             @Override
                             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                                 // set day of month , month and year value in the edit text
-                                enterYear[0] = year; enterMonth[0] = monthOfYear; enterDay[0] = dayOfMonth;
+                                enterYear[0] = year;
+                                enterMonth[0] = monthOfYear;
+                                enterDay[0] = dayOfMonth;
                                 date1.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
                             }
                         }, mYear, mMonth, mDay);
@@ -89,18 +89,18 @@ public class addExaberActivity extends AppCompatActivity {
                 if (checkValues()) {
 
                     //Preparations
-                    String first = new Date(enterYear[0] -1900,enterMonth[0],enterDay[0]).toString();
+                    String first = new Date(enterYear[0] - 1900, enterMonth[0], enterDay[0]).toString();
                     int second = 0;
                     int id1 = r1.getId();
                     int id2 = r2.getId();
                     int id3 = r3.getId();
-                    if(radiogroup1.getCheckedRadioButtonId() == id1) {
+                    if (radiogroup1.getCheckedRadioButtonId() == id1) {
                         second = 1;
                     } else if (radiogroup1.getCheckedRadioButtonId() == id2) {
                         second = 2;
                     } else if (radiogroup1.getCheckedRadioButtonId() == id3) {
                         second = 3;
-                    }else {
+                    } else {
                         Log.i("vlogs", "Error Radio ID Nnot Match");
                     }
 
@@ -108,10 +108,10 @@ public class addExaberActivity extends AppCompatActivity {
                     try {
                         ExaberDB mydb = new ExaberDB(addExaberActivity.this);
                         mydb.open();
-                        Log.i("vlogs", "Entry Created Table 1: " + mydb.createEntry(first,second,third) + second);
+                        Log.i("vlogs", "Entry Created Table 1: " + mydb.createEntry(first, second, third) + second);
                         mydb.close();
-                    }catch (SQLException e){
-                        Toast.makeText(addExaberActivity.this,e.getMessage(), Toast.LENGTH_SHORT).show();
+                    } catch (SQLException e) {
+                        Toast.makeText(addExaberActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                     Toast.makeText(addExaberActivity.this, "Successfully saved!", Toast.LENGTH_SHORT).show();
                     notes.setText("");

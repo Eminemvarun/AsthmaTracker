@@ -14,8 +14,6 @@ import android.widget.Toast;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.envy.asthmatracker.R;
-
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.Calendar;
@@ -52,7 +50,7 @@ public class addInhalerActivity extends AppCompatActivity {
 
         ActionBar actionBar = getSupportActionBar();
 
-        if(actionBar!=null) {
+        if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setDisplayShowHomeEnabled(true);
             actionBar.setTitle(" Add Inhaler Use");
@@ -72,7 +70,9 @@ public class addInhalerActivity extends AppCompatActivity {
                             @Override
                             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                                 // set day of month , month and year value in the edit text
-                                enterYear[0] = year; enterMonth[0] = monthOfYear; enterDay[0] = dayOfMonth;
+                                enterYear[0] = year;
+                                enterMonth[0] = monthOfYear;
+                                enterDay[0] = dayOfMonth;
                                 String s = dayOfMonth + "-" + (monthOfYear + 1) + "-" + year;
                                 date.setText(s);
                             }
@@ -89,22 +89,22 @@ public class addInhalerActivity extends AppCompatActivity {
                 if (checkValues()) {
 
                     //Preparations
-                    String first = new Date(enterYear[0] -1900,enterMonth[0],enterDay[0]).toString();
-                    String second = name.getText().toString().replaceAll("\\s","^");
+                    String first = new Date(enterYear[0] - 1900, enterMonth[0], enterDay[0]).toString();
+                    String second = name.getText().toString().replaceAll("\\s", "^");
                     int third;
-                    if(!puffs.getSelectedItem().toString().equals("2+")) {
+                    if (!puffs.getSelectedItem().toString().equals("2+")) {
                         third = Integer.parseInt(puffs.getSelectedItem().toString());
-                    }else{
-                        third =3;
+                    } else {
+                        third = 3;
                     }
                     String fourth = notes.getText().toString();
                     try {
                         ExaberDB mydb = new ExaberDB(addInhalerActivity.this);
                         mydb.open();
-                        Log.i("vlogs", "Entry Created TAble 2: " + mydb.createEntry(first,second,third,fourth));
+                        Log.i("vlogs", "Entry Created TAble 2: " + mydb.createEntry(first, second, third, fourth));
                         mydb.close();
-                    }catch (SQLException e){
-                        Toast.makeText(addInhalerActivity.this,e.getMessage(), Toast.LENGTH_SHORT).show();
+                    } catch (SQLException e) {
+                        Toast.makeText(addInhalerActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                     Toast.makeText(addInhalerActivity.this, "Successfully saved!", Toast.LENGTH_SHORT).show();
                     notes.setText("");

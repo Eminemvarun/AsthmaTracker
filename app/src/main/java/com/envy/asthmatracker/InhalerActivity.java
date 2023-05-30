@@ -19,14 +19,12 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.envy.asthmatracker.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class InhalerActivity extends AppCompatActivity {
-
 
 
     @Override
@@ -77,9 +75,8 @@ public class InhalerActivity extends AppCompatActivity {
         super.onStart();
         ArrayList<InhalerDataClass> myArrayList = new ArrayList<>();
         inhalerAdapter myAdapter;
-        TextView tvInhalerUse,tvStats1,tvStats2,tvStats3;
+        TextView tvInhalerUse, tvStats1, tvStats2, tvStats3;
         LinearLayout llStats;
-
 
 
         TextView textView = findViewById(R.id.tvInhalerTop);
@@ -93,7 +90,7 @@ public class InhalerActivity extends AppCompatActivity {
 
         RecyclerView.LayoutManager layoutManager;
         //layoutManager =  new LinearLayoutManager(InhalerActivity.this,LinearLayoutManager.VERTICAL,false);
-        layoutManager = new GridLayoutManager(InhalerActivity.this,1,GridLayoutManager.VERTICAL,false);
+        layoutManager = new GridLayoutManager(InhalerActivity.this, 1, GridLayoutManager.VERTICAL, false);
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
 
             @Override
@@ -106,33 +103,33 @@ public class InhalerActivity extends AppCompatActivity {
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
 
                 // Remove item from backing list here
-                if(swipeDir == ItemTouchHelper.LEFT) {
+                if (swipeDir == ItemTouchHelper.LEFT) {
                     InhalerDataClass inhalerDataClass = (InhalerDataClass) viewHolder.itemView.getTag();
 
-                            AlertDialog.Builder builder = new AlertDialog.Builder(InhalerActivity.this);
-                            builder.setMessage("Delete this entry?")
-                                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int id) {
-                                            try{
-                                            ExaberDB exaberDB =  new ExaberDB(InhalerActivity.this);
-                                            exaberDB.open();
-                                            String colon = "\"";
-                                            Log.i("vlogs", "onClick: "  + colon+ inhalerDataClass.getDate()+ colon);
-                                            exaberDB.deleteThisData(2,colon + inhalerDataClass.getDate() + colon);
-                                            exaberDB.close();
-                                            recreate();
-                                        }catch (SQLException e){
-                                                e.printStackTrace();
-                                            }
-                                        }
-                                    })
-                                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int id) {
-                                            dialog.cancel();
-                                            recreate();
-                                        }
-                                    });
-                            builder.show();
+                    AlertDialog.Builder builder = new AlertDialog.Builder(InhalerActivity.this);
+                    builder.setMessage("Delete this entry?")
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    try {
+                                        ExaberDB exaberDB = new ExaberDB(InhalerActivity.this);
+                                        exaberDB.open();
+                                        String colon = "\"";
+                                        Log.i("vlogs", "onClick: " + colon + inhalerDataClass.getDate() + colon);
+                                        exaberDB.deleteThisData(2, colon + inhalerDataClass.getDate() + colon);
+                                        exaberDB.close();
+                                        recreate();
+                                    } catch (SQLException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            })
+                            .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                    recreate();
+                                }
+                            });
+                    builder.show();
                 }
             }
         });
@@ -145,17 +142,17 @@ public class InhalerActivity extends AppCompatActivity {
             ExaberDB exaberDB = new ExaberDB(InhalerActivity.this);
             exaberDB.open();
             String stringer = exaberDB.getData(2);
-            Log.i("vlogs", "Data Returned is "+ stringer);
-            if(!stringer.isEmpty()) {
+            Log.i("vlogs", "Data Returned is " + stringer);
+            if (!stringer.isEmpty()) {
                 String[] string = stringer.split("\n");
                 for (String s : string) {
                     String[] second = s.split(" ");
                     String mystring = second[1];
-                    second[1] = mystring.replaceAll("\\^"," ");
-                    for(int i=4;i<second.length;i++){
-                        second[3] = second[3] + " "+ second[i];
+                    second[1] = mystring.replaceAll("\\^", " ");
+                    for (int i = 4; i < second.length; i++) {
+                        second[3] = second[3] + " " + second[i];
                     }
-                    InhalerDataClass inhalerDataClass = new InhalerDataClass(second[0], second[1],Integer.parseInt(second[2]), second[3]);
+                    InhalerDataClass inhalerDataClass = new InhalerDataClass(second[0], second[1], Integer.parseInt(second[2]), second[3]);
                     myArrayList.add(inhalerDataClass);
                 }
                 myAdapter = new inhalerAdapter(InhalerActivity.this, myArrayList);
@@ -165,15 +162,15 @@ public class InhalerActivity extends AppCompatActivity {
                 llStats.setVisibility(View.VISIBLE);
                 int a = exaberDB.getThisWeekCount(2);
                 int b = exaberDB.getLastWeekCount(2);
-                Log.i("vlogs", "Week Count Returned " + a + b );
+                Log.i("vlogs", "Week Count Returned " + a + b);
                 tvStats1.setText(String.valueOf(a));
-                float c = (float) a/7;
-                tvStats2.setText(String.format("%.02f",c));
+                float c = (float) a / 7;
+                tvStats2.setText(String.format("%.02f", c));
                 tvStats3.setText(b + " -> " + a);
             }
             exaberDB.close();
 
-        } catch(SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }

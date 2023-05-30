@@ -13,8 +13,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.envy.asthmatracker.R;
-
 public class exaberAdapter extends ArrayAdapter<ExaberDataClass> {
 
     Context mContext;
@@ -37,7 +35,7 @@ public class exaberAdapter extends ArrayAdapter<ExaberDataClass> {
 
         //Time to inflate
         LayoutInflater layoutInflater = LayoutInflater.from(mContext);
-        row = layoutInflater.inflate(mLayoutResourceId,parent,false);
+        row = layoutInflater.inflate(mLayoutResourceId, parent, false);
 
         //get reference of different views to inflate
 
@@ -53,7 +51,7 @@ public class exaberAdapter extends ArrayAdapter<ExaberDataClass> {
 
         tvDate.setText(mydata.prettyDate);
         tvIntensity.setText(mydata.mIntensity_String);
-        switch(mydata.mIntensity){
+        switch (mydata.mIntensity) {
             case 1:
                 tvIntensity.setTextColor(Color.GREEN);
                 break;
