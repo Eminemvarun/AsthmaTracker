@@ -1,6 +1,7 @@
 package com.envy.asthmatracker;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -8,10 +9,12 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -46,6 +49,8 @@ public class LatestResearch extends AppCompatActivity {
     SwipeRefreshLayout swipeRefreshLayout;
     ProgressBar progressBar2;
 
+    ArrayList<Integer> newsPreference;
+    ToggleButton b1,b2,b3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +62,12 @@ public class LatestResearch extends AppCompatActivity {
         linearLayout = findViewById(R.id.layout1);
         myRecyclerView = findViewById(R.id.recyclerViewResearch);
         progressBar2 = findViewById(R.id.progressTwo);
+        b1 = findViewById(R.id.toggleOne);
+        b2 = findViewById(R.id.toggleTwo);
+        b3 = findViewById(R.id.toggleThree);
+
+        loadData();
+        //Setup Up Views
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             layoutManager = new GridLayoutManager(LatestResearch.this, 1, GridLayoutManager.HORIZONTAL, false);
         } else {
@@ -67,7 +78,7 @@ public class LatestResearch extends AppCompatActivity {
         myRecyclerView.setAdapter(mynewsadapter);
         myRecyclerView.setHasFixedSize(true);
 
-
+        //Check Cache. Either read or start downloading data
         if (isCacheFileExists(LatestResearch.this)) {
             linearLayout.setVisibility(View.VISIBLE);
             linearLayoutLoading.setVisibility(View.GONE);
@@ -79,10 +90,9 @@ public class LatestResearch extends AppCompatActivity {
                 mynewsadapter.addAll(mylist);
                 mynewsadapter.notifyDataSetChanged();
             } else {
-                Toast.makeText(LatestResearch.this, "Data Returned is empty", Toast.LENGTH_SHORT).show();
+                Toast.makeText(LatestResearch.this, "Unable to read Cache", Toast.LENGTH_SHORT).show();
             }
         } else {
-
             downloadData downloadData = new downloadData();
             downloadData.execute();
         }
@@ -93,6 +103,27 @@ public class LatestResearch extends AppCompatActivity {
                 progressBar2.setVisibility(View.VISIBLE);
                 downloadData downloadData = new downloadData();
                 downloadData.execute();
+            }
+        });
+
+        b1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                saveData();
+            }
+        });
+
+        b2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                saveData();
+            }
+        });
+
+        b3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                saveData();
             }
         });
         // End of On Create
@@ -267,8 +298,26 @@ public class LatestResearch extends AppCompatActivity {
 
             try {
                 Log.i("vlogs", "doInBackground trying");
-                String query = "asthma%20OR%20allergy";
-                URL url = new URL("https://newsdata.io/api/1/news?apikey=pub_22043a7d9e1ae8f0b692643c00ed38cc08faa&language=en&qInTitle=" + query);
+                String lan = "";
+                String query="";
+                if( !b1.isChecked() && !b2.isChecked()){
+                    Toast.makeText(LatestResearch.this, "Please check either asthma or allergy tag", Toast.LENGTH_SHORT).show();
+                    return null;
+                }
+                if(b1.isChecked() && b2.isChecked()){
+                    query = "asthma%20OR%20allergy";
+                }
+
+                else if(b1.isChecked()){
+                    query = "asthma";
+                }
+                else if(b2.isChecked()){
+                    query = "allergies";
+                }
+                if(b3.isChecked()){
+                    lan = "&language=en";
+                }
+                URL url = new URL("https://newsdata.io/api/1/news?apikey=pub_22043a7d9e1ae8f0b692643c00ed38cc08faa" + lan + "&q=" + query);
                 HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
                 httpURLConnection.setRequestProperty("X-ACCESS-KEY", "pub_22043a7d9e1ae8f0b692643c00ed38cc08faa");
                 httpURLConnection.connect();
@@ -356,6 +405,20 @@ public class LatestResearch extends AppCompatActivity {
             }
         }
     }
+public void saveData(){
+        SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
+    SharedPreferences.Editor editor = sharedPreferences.edit();
+    editor.putBoolean("KEY1",b1.isChecked());
+    editor.putBoolean("KEY2",b2.isChecked());
+    editor.putBoolean("KEY3",b3.isChecked());
+    editor.apply();
+}
 
+public void loadData(){
+    SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
+    b1.setChecked(sharedPreferences.getBoolean("KEY1",true));
+    b2.setChecked(sharedPreferences.getBoolean("KEY2",false));
+    b3.setChecked(sharedPreferences.getBoolean("KEY3",true));
+}
 
 }
